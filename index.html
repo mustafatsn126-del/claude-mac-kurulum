@@ -1,0 +1,919 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="MacBook'a Claude kurulumu adım adım: tek komutla kurulum, ilk kullanım ve fotoğraf/video işlerinde neler yapılabileceği.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Zeynep'in Claude Kurulumu">
+<meta property="og:description" content="MacBook'a Claude kurulumu adım adım: tek komutla kurulum, ilk kullanım ve fotoğraf/video işlerinde neler yapılabileceği.">
+<meta property="og:url" content="https://mustafatsn126-del.github.io/claude-mac-kurulum/">
+<meta property="og:image" content="https://mustafatsn126-del.github.io/claude-mac-kurulum/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F5F6F8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1014" media="(prefers-color-scheme: dark)">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Zeynep'in Claude Kurulumu</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Yerlesim: tek sutunlu rehber; bolumler kurgu masasindaki gibi zaman kodu (TC) ile isaretli, REC kirmizisi tek vurgu. */
+:root{
+  --bg:#F5F6F8; --surface:#FFFFFF; --sunk:#ECEEF2; --ink:#14171C; --muted:#586070; --line:#DCE0E6;
+  --rec:#D92F3C; --rec-ink:#B3202D; --rec-soft:#FCE9EB; --ok:#1C8A5A; --ok-soft:#E4F4EC; --warn:#9A6512; --warn-soft:#FBF1DE;
+  --term:#16191E; --term-ink:#E6E9EE; --term-dim:#8B93A1; --term-ok:#4CD38F; --term-mag:#E58CF0; --term-yel:#F2C94C;
+  --mac-bar:#E9EBEF; --folder:#5AA7F0;
+  --f-disp:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Inter", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0E1014; --surface:#161920; --sunk:#1C2028; --ink:#ECEEF2; --muted:#9BA3B0; --line:#2A2F39;
+  --rec:#FF5A66; --rec-ink:#FF7A84; --rec-soft:#3A1A1F; --ok:#45C98B; --ok-soft:#14291F; --warn:#E5B54A; --warn-soft:#2E2614;
+  --term:#090B0E; --term-ink:#E6E9EE; --term-dim:#7E8796; --mac-bar:#242832; --folder:#4C93D6; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0E1014; --surface:#161920; --sunk:#1C2028; --ink:#ECEEF2; --muted:#9BA3B0; --line:#2A2F39;
+  --rec:#FF5A66; --rec-ink:#FF7A84; --rec-soft:#3A1A1F; --ok:#45C98B; --ok-soft:#14291F; --warn:#E5B54A; --warn-soft:#2E2614;
+  --term:#090B0E; --term-ink:#E6E9EE; --term-dim:#7E8796; --mac-bar:#242832; --folder:#4C93D6; color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.6;
+  padding-left:max(16px, env(safe-area-inset-left,0px));padding-right:max(16px, env(safe-area-inset-right,0px))}
+.sayfa{max-width:880px;margin:0 auto;padding-block:28px 80px}
+h1,h2,h3{font-family:var(--f-disp);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,6vw,3.3rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.5rem,4vw,2.1rem);font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.2rem;font-weight:700}
+p{margin:0}
+a{color:var(--rec-ink);text-underline-offset:3px;font-weight:600}
+a:focus-visible,button:focus-visible{outline:3px solid var(--rec);outline-offset:2px;border-radius:6px}
+kbd{font-family:var(--f-mono);font-size:.85em;background:var(--surface);border:1px solid var(--line);border-bottom-width:3px;border-radius:6px;padding:1px 7px;white-space:nowrap}
+code.i{font-family:var(--f-mono);font-size:.88em;background:var(--sunk);padding:1px 6px;border-radius:5px}
+.etiket{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.rec{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:.75rem;letter-spacing:.12em;color:var(--rec-ink);font-weight:600}
+.rec::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--rec);box-shadow:0 0 0 4px var(--rec-soft)}
+
+/* Ust bolum */
+.ust{display:grid;gap:18px;padding-block:8px 28px;border-bottom:1px solid var(--line)}
+.ust .alt{font-size:1.1rem;color:var(--muted);max-width:62ch}
+.ust .kime{font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
+.sira{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.sira div{display:flex;gap:10px;align-items:baseline;padding:10px 12px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);font-size:.93rem}
+.sira i{font-style:normal;font-family:var(--f-mono);font-weight:700;color:var(--rec-ink)}
+.yollar{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:6px}
+.yol{display:grid;gap:8px;padding:18px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface);text-decoration:none;color:var(--ink);font-weight:400}
+.yol:hover{border-color:var(--rec)}
+.yol b{font-family:var(--f-disp);font-size:1.25rem}
+.yol .rozet{justify-self:start;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:99px;background:var(--rec-soft);color:var(--rec-ink)}
+.yol .rozet.gri{background:var(--sunk);color:var(--muted)}
+.yol span.k{color:var(--muted);font-size:.93rem}
+
+nav.icindekiler{display:flex;flex-wrap:wrap;gap:8px;padding-block:18px}
+nav.icindekiler a{font-weight:500;font-size:.88rem;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);padding:5px 12px;border-radius:99px}
+nav.icindekiler a:hover{border-color:var(--rec);color:var(--rec-ink)}
+
+/* Bolumler */
+section.bolum{display:grid;gap:22px;padding-block:44px;border-bottom:1px solid var(--line)}
+.bolum-bas{display:grid;gap:8px}
+.bolum-bas p{color:var(--muted);max-width:64ch}
+.tc{font-family:var(--f-mono);font-size:.78rem;color:var(--rec-ink);letter-spacing:.08em}
+
+.adim{display:grid;grid-template-columns:52px minmax(0,1fr);gap:16px;align-items:start}
+.adim-no{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-disp);font-weight:800;font-size:1.3rem;background:var(--ink);color:var(--bg)}
+.adim-govde{display:grid;gap:12px;min-width:0}
+.adim-govde > p, .adim-govde li{max-width:66ch}
+.adim-govde ul,.adim-govde ol{margin:0;padding-left:22px;display:grid;gap:6px}
+@media (max-width:520px){.adim{grid-template-columns:38px minmax(0,1fr);gap:12px}.adim-no{width:38px;height:38px;font-size:1rem}}
+
+.kutu{border-radius:var(--r);padding:14px 16px;display:grid;gap:6px;border:1px solid var(--line);background:var(--surface)}
+.kutu.iyi{background:var(--ok-soft);border-color:transparent}
+.kutu.dikkat{background:var(--warn-soft);border-color:transparent}
+.kutu.kirmizi{background:var(--rec-soft);border-color:transparent}
+.kutu b.bas{font-family:var(--f-disp);font-size:1.02rem}
+
+.liste-kontrol{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.liste-kontrol div{display:grid;grid-template-columns:26px minmax(0,1fr);gap:8px;padding:12px;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+.tik{width:22px;height:22px;border-radius:6px;border:2px solid var(--rec);display:grid;place-items:center;color:var(--rec);font-weight:800;font-size:.8rem;margin-top:2px}
+
+/* Kopyalama kutusu */
+.kopya{border:2px solid var(--rec);border-radius:12px;background:var(--surface);overflow:hidden}
+.kopya-bas{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:var(--rec-soft)}
+.kopya-ad{font-weight:700;display:grid;gap:2px}
+.kopya-ad small{font-weight:500;color:var(--muted);font-size:.82rem}
+.kopya-btn{font:700 1rem var(--f-body);background:var(--rec);color:#fff;border:0;border-radius:9px;padding:11px 20px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 2px 0 var(--rec-ink)}
+.kopya-btn:hover{filter:brightness(1.07)}
+.kopya-btn.oldu{background:var(--ok);box-shadow:none}
+.kopya-btn svg{width:18px;height:18px}
+.ok-not{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:8px 14px 0;color:var(--rec-ink);font-weight:700;font-size:.92rem;text-align:right}
+.ok-not svg{flex:none;width:38px;height:30px}
+.kopya pre{margin:0;padding:14px 16px;background:var(--term);color:var(--term-ink);font:13px/1.55 var(--f-mono);overflow:auto;max-height:340px;white-space:pre;tab-size:2}
+.kopya pre.kisa{max-height:none}
+.sonra{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;padding:12px 14px;border-top:1px solid var(--line)}
+.sonra div{display:flex;gap:8px;align-items:baseline;font-size:.92rem}
+.sonra i{font-style:normal;font-family:var(--f-mono);font-weight:700;color:var(--rec-ink)}
+.mini{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-left:4px solid var(--rec);border-radius:8px;background:var(--surface)}
+.mini p{font-size:.95rem}
+.mini .kopya-btn{padding:8px 13px;font-size:.88rem}
+@media (max-width:520px){.mini{grid-template-columns:1fr}.mini .kopya-btn{justify-self:start}}
+
+/* Temsili Mac pencereleri */
+.cizim{display:grid;gap:8px;margin:0}
+.cizim figcaption{font-size:.82rem;color:var(--muted)}
+.mac{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:0 10px 30px -18px rgba(0,0,0,.45)}
+.mac-bar{display:flex;align-items:center;gap:7px;padding:9px 12px;background:var(--mac-bar);font-size:.8rem;color:var(--muted)}
+.mac-bar i{width:11px;height:11px;border-radius:50%;background:#FF5F57}
+.mac-bar i:nth-child(2){background:#FEBC2E}.mac-bar i:nth-child(3){background:#28C840}
+.mac-bar span{margin-left:auto;margin-right:auto;font-weight:600}
+.mac-ic{padding:18px;position:relative}
+.mac.koyu{background:var(--term);border-color:#2a2f39}
+.mac.koyu .mac-bar{background:#262A31;color:#A9B0BC}
+.term{font:13px/1.7 var(--f-mono);color:var(--term-ink);padding:14px 16px;overflow-x:auto;white-space:pre}
+.term .d{color:var(--term-dim)} .term .g{color:var(--term-ok)} .term .m{color:var(--term-mag);font-weight:600} .term .y{color:var(--term-yel)}
+.imlec{display:inline-block;width:8px;height:15px;background:var(--term-ink);vertical-align:-2px;animation:yanip 1.1s steps(1) infinite}
+@keyframes yanip{50%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.imlec{animation:none}}
+.balon{position:absolute;display:flex;align-items:center;gap:6px;background:var(--rec);color:#fff;font:700 .8rem var(--f-body);padding:6px 10px;border-radius:8px;white-space:nowrap;box-shadow:0 6px 16px -8px rgba(0,0,0,.5)}
+.halka{outline:3px solid var(--rec);outline-offset:3px;border-radius:8px}
+
+.spot{max-width:520px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.spot-ara{display:flex;align-items:center;gap:10px;padding:12px 14px;font-size:1.25rem;border-bottom:1px solid var(--line)}
+.spot-ara svg{width:20px;height:20px;color:var(--muted)}
+.spot-sonuc{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--rec-soft)}
+.ikon-term{width:34px;height:34px;border-radius:8px;background:#20242B;color:#E6E9EE;display:grid;place-items:center;font:700 .7rem var(--f-mono);border:1px solid #444}
+.tuslar{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:8px;font-weight:600}
+.tuslar kbd{font-size:1.05rem;padding:6px 12px}
+
+.dmg{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:20px;padding:26px 10px}
+.app-ikon{display:grid;justify-items:center;gap:6px;font-size:.85rem;font-weight:600}
+.app-ikon .kare{width:74px;height:74px;border-radius:18px;background:linear-gradient(145deg,#E28A5C,#C7653A);display:grid;place-items:center;color:#fff;font:800 1.7rem var(--f-disp)}
+.app-ikon .klasor{width:84px;height:66px;border-radius:8px;background:var(--folder);position:relative;margin-top:8px}
+.app-ikon .klasor::before{content:"";position:absolute;left:0;top:-8px;width:36px;height:12px;border-radius:5px 5px 0 0;background:var(--folder)}
+.app-ikon .klasor::after{content:"A";position:absolute;inset:0;display:grid;place-items:center;color:#fff;font:800 1.4rem var(--f-disp);opacity:.85}
+.surukle{display:grid;justify-items:center;gap:2px;color:var(--rec-ink);font-weight:700;font-size:.85rem}
+.surukle svg{width:120px;height:40px}
+
+.diyalog{max-width:430px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:12px;justify-items:center;text-align:center;box-shadow:0 18px 40px -20px rgba(0,0,0,.5)}
+.diyalog .butonlar{display:flex;gap:10px;width:100%}
+.diyalog .butonlar span{flex:1;padding:8px;border-radius:8px;background:var(--sunk);font-weight:600;font-size:.9rem}
+.diyalog .butonlar span.ana{background:#2F7DF6;color:#fff}
+
+.claude-pen{display:grid;grid-template-columns:150px minmax(0,1fr);min-height:250px}
+.claude-yan{border-right:1px solid var(--line);padding:12px;display:grid;align-content:start;gap:6px;font-size:.85rem;background:var(--sunk)}
+.sekmeler{display:flex;gap:4px;background:var(--surface);border-radius:8px;padding:3px;border:1px solid var(--line)}
+.sekmeler span{flex:1;text-align:center;padding:4px 0;border-radius:6px;font-size:.75rem;font-weight:600;color:var(--muted)}
+.sekmeler span.acik{background:var(--ink);color:var(--bg)}
+.claude-ana{padding:16px;display:grid;align-content:end;gap:10px}
+.istem{border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:10px;background:var(--surface)}
+.istem .yazi{color:var(--muted);font-size:.92rem}
+.cipler{display:flex;flex-wrap:wrap;gap:6px}
+.cip{font-size:.75rem;font-weight:600;padding:4px 9px;border-radius:99px;border:1px solid var(--line);background:var(--sunk)}
+@media (max-width:560px){.claude-pen{grid-template-columns:1fr}.claude-yan{border-right:0;border-bottom:1px solid var(--line)}}
+
+.tarayici .adres{flex:1;margin-left:10px;background:var(--surface);border-radius:6px;padding:3px 10px;font-family:var(--f-mono);font-size:.75rem;color:var(--ink);text-align:left}
+.indir-btn{display:inline-block;background:var(--ink);color:var(--bg);font-weight:700;padding:10px 18px;border-radius:99px}
+
+/* Zaman cizelgesi */
+.akis{display:grid;gap:0;border-left:2px dashed var(--line);margin-left:10px}
+.akis-sat{display:grid;grid-template-columns:minmax(0,1fr);gap:4px;padding:0 0 18px 22px;position:relative}
+.akis-sat::before{content:"";position:absolute;left:-8px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--surface);border:3px solid var(--rec)}
+.akis-sat .ust-sat{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline}
+.akis-sat b{font-family:var(--f-disp);font-size:1.05rem}
+.sure{font-family:var(--f-mono);font-size:.75rem;padding:2px 8px;border-radius:99px;background:var(--sunk);color:var(--muted)}
+.akis-sat p{color:var(--muted);font-size:.95rem;max-width:64ch}
+
+/* Tablolar */
+.tablo-sar{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--sunk)}
+tr:last-child td{border-bottom:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td code{font-family:var(--f-mono);font-size:.82rem;word-break:break-word}
+
+/* Yetenekler */
+.alan{display:grid;gap:14px;padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.alan-bas{display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;justify-content:space-between}
+.alan > p{color:var(--muted);max-width:66ch}
+.istemler{display:grid;gap:8px}
+.ikili{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.ikili > div{display:grid;gap:6px;align-content:start;padding:14px;border-radius:var(--r);background:var(--sunk)}
+.ikili > div b{font-family:var(--f-disp)}
+.ikili > div p{font-size:.93rem;color:var(--muted)}
+
+.son{padding-block:40px 10px;display:grid;gap:10px;color:var(--muted);font-size:.9rem}
+</style>
+</head>
+<body>
+
+<div class="sayfa">
+
+<header class="ust">
+  <span class="rec">REC · Mac kurulum rehberi</span>
+  <h1>Zeynep, Claude'u MacBook'una birlikte kuralım</h1>
+  <p class="alt">Claude, Mac'indeki dosyalarla senin yerine çalışabilen bir yapay zekâ asistanı. Fotoğraf arşivini düzenler, videoları dönüştürür, altyazı çıkarır, yüzlerce dosyalık tekrar işlerini dakikalara indirir. Bu sayfa kurulumu baştan sona, hiçbir şey bilmediğini varsayarak anlatıyor.</p>
+  <p class="kime">Zeynep Tutulkan için hazırlandı · Kasım 2026 · Mac (macOS 13 ve üstü)</p>
+  <div class="kutu iyi">
+    <b class="bas">Şu an hiçbir şey indirmen, ödemen gerekmiyor</b>
+    <p>Bu sayfayı telefonda da bilgisayarda da tarayıcıda okuyabilirsin; uygulama veya hesap gerekmez. Önce bir kez baştan sona oku. Kuruluma hazır olduğunda aynı bağlantıyı <b>MacBook'unda</b> (Safari veya Chrome) aç: kopyalayacağın komutlar Mac'in Terminal'ine yapıştırılır, telefonda işe yaramaz.</p>
+  </div>
+  <div class="sira">
+    <div><i>1</i><span><b>Oku</b> · şimdi, telefonda olabilir</span></div>
+    <div><i>2</i><span><b>Ücretsiz hesap aç</b> · 2 dk</span></div>
+    <div><i>3</i><span><b>MacBook'a kur</b> · 15–40 dk</span></div>
+    <div><i>4</i><span><b>Pro'ya geç</b> · dosyalarla çalışmaya hazır olunca</span></div>
+  </div>
+  <div class="yollar">
+    <a class="yol" href="#yol-a">
+      <span class="rozet">Önerilen</span>
+      <b>Yol A · Tek yapıştırma</b>
+      <span class="k">Terminal'e bir komut yapıştırırsın, gerisini Mac kendisi yapar. Her şey (Claude + foto/video araçları) tek seferde kurulur. 15–40 dk, çoğu bekleme.</span>
+    </a>
+    <a class="yol" href="#yol-b">
+      <span class="rozet gri">Alternatif</span>
+      <b>Yol B · Adım adım, elle</b>
+      <span class="k">Claude'u internetten indirip kendin kurarsın. Fotoğraf/video araçları için yine de sonda Terminal'e bir komut yapıştırman gerekir.</span>
+    </a>
+  </div>
+</header>
+
+<nav class="icindekiler" aria-label="Bölümler">
+  <a href="#hazirlik">Başlamadan önce</a>
+  <a href="#hesap">Hesap ve abonelik</a>
+  <a href="#yol-a">Yol A · Terminal</a>
+  <a href="#yol-b">Yol B · Elle</a>
+  <a href="#ilk-acilis">İlk açılış</a>
+  <a href="#iphone">iPhone</a>
+  <a href="#isin">Senin işin için neler yapar</a>
+  <a href="#sorunlar">Sorun olursa</a>
+</nav>
+
+<section class="bolum" id="hazirlik">
+  <div class="bolum-bas">
+    <span class="tc">TC 00:00 · HAZIRLIK</span>
+    <h2>Başlamadan önce 5 kontrol</h2>
+    <p>Bunlar hazırsa kurulum takılmadan biter. Hepsi 2 dakikada kontrol edilir.</p>
+  </div>
+  <div class="liste-kontrol">
+    <div><span class="tik">✓</span><p><b>macOS 13 (Ventura) veya daha yeni.</b> Ekranın sol üstündeki <b> Apple</b> menüsü → <b>Bu Mac Hakkında</b>. Açılan pencerede “macOS Sonoma 14…” gibi bir ad ve sayı yazar. 13 ve üstüyse tamam.</p></div>
+    <div><span class="tik">✓</span><p><b>Mac açılış şifren.</b> Bilgisayarı açarken yazdığın şifre. Kurulumda bir kez sorulur.</p></div>
+    <div><span class="tik">✓</span><p><b>Yönetici hesabı.</b> Mac'i kendi hesabınla kurduysan zaten yöneticisin. Emin değilsen: Sistem Ayarları → Kullanıcılar ve Gruplar, adının altında “Yönetici” yazar.</p></div>
+    <div><span class="tik">✓</span><p><b>En az 10 GB boş yer.</b> Bu Mac Hakkında → Diğer Bilgiler (veya Sistem Ayarları → Genel → Saklama Alanı).</p></div>
+    <div><span class="tik">✓</span><p><b>Şarj kablosu takılı, internet açık.</b> Ev Wi-Fi'ı yeterli. Kurulum sırasında kapağı kapatma.</p></div>
+  </div>
+  <div class="kutu iyi">
+    <b class="bas">Bilgisayar kapanmaz, yeniden başlamaz</b>
+    <p>Kurulum boyunca Mac yeniden başlatılmaz. Komut, ekranın uykuya geçmesini de kendisi engeller; bitince bu engel kalkar.</p>
+  </div>
+</section>
+
+<section class="bolum" id="hesap">
+  <div class="bolum-bas">
+    <span class="tc">TC 00:05 · HESAP</span>
+    <h2>Claude hesabı ve abonelik</h2>
+    <p>Hangi yolu seçersen seç, önce bir Claude hesabın olmalı. Hesap ücretsizdir ve kurulum için abonelik gerekmez: uygulama ücretsiz hesapla açılır, sohbet çalışır. Dosyalarınla çalışan bölüm (Code sekmesi) ise Pro plan ister; onu dosyalarınla çalışmaya hazır olduğunda alırsın.</p>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">1</div>
+    <div class="adim-govde">
+      <h3>Hesap aç</h3>
+      <p>Bu bağlantıya tıkla: <a href="https://claude.ai/login" target="_blank" rel="noopener">claude.ai/login</a>. <b>Continue with Google</b>, <b>Continue with Apple</b> veya e-posta adresinle devam et. E-postayla açarsan gelen kutuna bir giriş kodu ya da bağlantısı gelir; ona tıkla.</p>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">2</div>
+    <div class="adim-govde">
+      <h3>Pro planı seç (hazır olduğunda)</h3>
+      <p>Bu adımı kurulumdan sonra da yapabilirsin. Giriş yaptıktan sonra: <a href="https://claude.ai/upgrade" target="_blank" rel="noopener">claude.ai/upgrade</a>. <b>Pro</b> planını seç ve kartını gir (bu adımı sen yaparsın, kart bilgisini kimseyle paylaşma).</p>
+      <div class="tablo-sar"><table>
+        <thead><tr><th>Plan</th><th>Aylık ücret</th><th>Senin için</th></tr></thead>
+        <tbody>
+          <tr><td>Free</td><td class="num">0 $</td><td>Yalnızca sohbet. Dosyalarınla çalışmaz.</td></tr>
+          <tr><td><b>Pro</b></td><td class="num">20 $ (yıllık ödersen 17 $)</td><td><b>Başlangıç için doğru seçim.</b> Code ve Cowork sekmeleri açılır.</td></tr>
+          <tr><td>Max</td><td class="num">100 $</td><td>Her gün saatlerce yoğun video işi yaparsan. Gerekirse sonra yükseltilir.</td></tr>
+        </tbody>
+      </table></div>
+      <p style="font-size:.85rem;color:var(--muted)">Fiyatlar Kasım 2026'da claude.com/pricing sayfasındaki ABD doları fiyatlarıdır. Avrupa'da ödeme ekranında KDV dahil euro fiyatı görünür.</p>
+    </div>
+  </div>
+</section>
+
+<section class="bolum" id="yol-a">
+  <div class="bolum-bas">
+    <span class="rec">YOL A · ÖNERİLEN</span>
+    <h2>Tek yapıştırmayla her şeyi kur</h2>
+    <p>Terminal, Mac'e yazıyla komut verdiğin bir penceredir. Korkulacak bir şey yok: aşağıdaki komutu kopyalayıp oraya yapıştıracaksın, Mac de listedeki her şeyi sırayla indirip kuracak.</p>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">1</div>
+    <div class="adim-govde">
+      <h3>Terminal'i aç</h3>
+      <p>Klavyede <kbd>⌘ Command</kbd> tuşunu basılı tut ve <kbd>Boşluk</kbd> çubuğuna bas. Ekranın ortasında bir arama çubuğu (Spotlight) açılır. <b>Terminal</b> yaz ve <kbd>↩ Enter</kbd> bas.</p>
+      <figure class="cizim">
+        <div class="tuslar"><kbd>⌘ Command</kbd> + <kbd>Boşluk</kbd> → <span>“Terminal” yaz</span> → <kbd>↩</kbd></div>
+        <div class="spot">
+          <div class="spot-ara"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21" stroke-linecap="round"/></svg><span>Terminal</span><span class="imlec" style="background:var(--ink)"></span></div>
+          <div class="spot-sonuc"><span class="ikon-term">&gt;_</span><div><b>Terminal</b><br><small style="color:var(--muted)">Uygulama</small></div><span style="margin-left:auto;font-weight:700;color:var(--rec-ink)">↩ Enter</span></div>
+        </div>
+        <figcaption>Temsili çizim. Senin ekranında renkler biraz farklı olabilir.</figcaption>
+      </figure>
+      <p>Siyah veya beyaz bir pencere açılır. En altta adın ve <code class="i">%</code> işareti görünür. Bu, Mac'in komut beklediği anlamına gelir.</p>
+      <figure class="cizim">
+        <div class="mac koyu">
+          <div class="mac-bar"><i></i><i></i><i></i><span>zeynep — zsh — 80×24</span></div>
+          <div class="term"><span class="d">Last login: Mon Nov 16 19:02:11 on console</span>
+zeynep@MacBook-Pro ~ % <span class="imlec"></span></div>
+        </div>
+        <figcaption>Terminal penceresi böyle görünür (temsili).</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">2</div>
+    <div class="adim-govde">
+      <h3>Komutu kopyala</h3>
+      <p>Aşağıdaki kırmızı çerçeveli kutunun sağ üstündeki <b>Kopyala</b> düğmesine bas. Kutunun içindeki her şey tek seferde kopyalanır. İçindeki yazıları okumana veya seçmene gerek yok.</p>
+      <div class="kopya">
+        <div class="kopya-bas">
+          <span class="kopya-ad">Kurulum komutunun tamamı<small>Claude + Claude Code + Homebrew + ffmpeg + ImageMagick + ExifTool + Git</small></span>
+          <button class="kopya-btn" type="button" data-hedef="komut-tam" id="btn-komut-tam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><span>Kopyala</span></button>
+        </div>
+        <div class="ok-not"><span>Önce bu düğmeye bas: kutudaki komutun tamamı kopyalanır</span><svg viewBox="0 0 38 30" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 26C14 26 26 20 32 6"/><path d="M25 8l7-4 2 8"/></svg></div>
+        <pre id="komut-tam" tabindex="0">cat &gt; ~/zeynep-kurulum.sh &lt;&lt;'KURULUM'
+#!/bin/bash
+# Zeynep icin: Claude masaustu + Claude Code + foto/video araclari (macOS 13+)
+set -u
+
+R=$'\033[0m'; B=$'\033[1m'; KIR=$'\033[1;31m'; YES=$'\033[1;32m'; SAR=$'\033[1;33m'; MOR=$'\033[1;35m'
+adim()  { printf '\n%s━━━ %s ━━━%s\n' "$MOR" "$1" "$R"; }
+tamam() { printf '%s✔ %s%s\n' "$YES" "$1" "$R"; }
+uyari() { printf '%s! %s%s\n' "$SAR" "$1" "$R"; }
+dur()   { printf '\n%s✖ %s%s\n\n' "$KIR" "$1" "$R"; exit 1; }
+
+printf '\n%sMerhaba Zeynep! Kurulum başlıyor.%s\n' "$B" "$R"
+printf 'Toplam 15-40 dakika sürebilir. Bu pencereyi kapatma, Mac şarjda kalsın.\n'
+
+[ "$(uname -s)" = "Darwin" ] || dur "Bu kurulum yalnızca Mac içindir."
+SURUM=$(sw_vers -productVersion)
+ANA=${SURUM%%.*}
+[ "$ANA" -ge 13 ] || dur "macOS $SURUM eski. En az macOS 13 gerekiyor: Apple menüsü &gt; Sistem Ayarları &gt; Genel &gt; Yazılım Güncelleme."
+tamam "macOS $SURUM uygun"
+groups | grep -qw admin || dur "Bu Mac hesabı yönetici (Admin) değil. Yönetici hesabıyla giriş yapıp tekrar dene."
+
+# Kurulum surerken Mac uykuya dalmasin; betik bitince kendiliginden durur.
+caffeinate -dimsu -w $$ &amp;
+
+adim "1/6 Mac şifresi"
+printf 'Mac açılış şifreni yaz ve Enter (↩) tuşuna bas.\n'
+printf 'Yazarken ekranda HİÇBİR ŞEY görünmez; bu normal, yazmaya devam et.\n'
+sudo -v || dur "Şifre kabul edilmedi. Komutu yeniden yapıştırıp tekrar dene."
+# Uzun adimlarda sifrenin tekrar sorulmamasi icin oturumu canli tutar.
+( while true; do sudo -n true; sleep 50; kill -0 $$ 2&gt;/dev/null || exit; done ) 2&gt;/dev/null &amp;
+tamam "Şifre alındı"
+
+adim "2/6 Homebrew (program yükleyici) + Apple geliştirici araçları"
+if [ -x /opt/homebrew/bin/brew ]; then
+  BREW=/opt/homebrew/bin/brew
+elif [ -x /usr/local/bin/brew ]; then
+  BREW=/usr/local/bin/brew
+else
+  printf 'İndiriliyor: Apple Komut Satırı Araçları + Homebrew (yaklaşık 1-2 GB).\n'
+  printf 'En uzun adım budur (5-20 dk). Yazılar akarken bekle.\n'
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" \
+    || dur "Homebrew kurulamadı. İnternet bağlantını kontrol edip komutu yeniden yapıştır."
+  if [ -x /opt/homebrew/bin/brew ]; then BREW=/opt/homebrew/bin/brew; else BREW=/usr/local/bin/brew; fi
+fi
+[ -x "$BREW" ] || dur "Homebrew bulunamadı."
+eval "$("$BREW" shellenv)"
+grep -qs "brew shellenv" "$HOME/.zprofile" || printf '\neval "$(%s shellenv)"\n' "$BREW" &gt;&gt; "$HOME/.zprofile"
+tamam "Homebrew hazır"
+
+adim "3/6 Claude masaüstü uygulaması"
+if [ -d "/Applications/Claude.app" ]; then
+  tamam "Claude zaten kurulu, bu adım atlandı"
+else
+  printf 'İndiriliyor: Claude uygulaması (birkaç yüz MB).\n'
+  brew install --cask claude || dur "Claude uygulaması kurulamadı. Komutu yeniden yapıştır."
+  tamam "Claude, Uygulamalar klasörüne kuruldu"
+fi
+
+adim "4/6 Claude Code (terminal sürümü)"
+if command -v claude &gt;/dev/null 2&gt;&amp;1 || [ -x "$HOME/.local/bin/claude" ]; then
+  tamam "Claude Code zaten kurulu"
+else
+  curl -fsSL https://claude.ai/install.sh | bash \
+    &amp;&amp; tamam "Claude Code kuruldu" \
+    || uyari "Terminal sürümü kurulamadı; masaüstü uygulaması yine de çalışır."
+fi
+grep -qs '.local/bin' "$HOME/.zshrc" || printf '\nexport PATH="$HOME/.local/bin:$PATH"\n' &gt;&gt; "$HOME/.zshrc"
+
+adim "5/6 Fotoğraf ve video araçları"
+printf 'İndiriliyor: Git, ffmpeg (video), ImageMagick (fotoğraf), ExifTool (fotoğraf bilgileri).\n'
+for P in git ffmpeg imagemagick exiftool; do
+  if brew list --formula "$P" &gt;/dev/null 2&gt;&amp;1; then
+    tamam "$P zaten var"
+  elif brew install "$P"; then
+    tamam "$P kuruldu"
+  else
+    uyari "$P kurulamadı. Sonra Claude'a \"$P aracını kur\" diyebilirsin."
+  fi
+done
+
+adim "6/6 Çalışma klasörü ve Claude'a tanıtım notu"
+mkdir -p "$HOME/Claude Calisma/Gelen" "$HOME/Claude Calisma/Cikti" "$HOME/.claude"
+if [ ! -f "$HOME/.claude/CLAUDE.md" ]; then
+cat &gt; "$HOME/.claude/CLAUDE.md" &lt;&lt;'NOT'
+# Benim hakkımda
+- Adım Zeynep. Fotoğrafçı ve video editörüyüm; yazılım bilmiyorum.
+- Benimle her zaman Türkçe, sade ve adım adım konuş. Teknik bir terim kullanırsan bir cümleyle açıkla.
+
+# Dosyalarımla çalışırken
+- Orijinal fotoğraf ve videolarımı ASLA silme, üzerine yazma. Sonuçları her zaman yeni bir klasöre kaydet (ör. "Cikti").
+- Bir şeyi silmen veya taşıman gerekiyorsa önce bana sor.
+- Büyük bir işe başlamadan önce 2-3 örnek dosyada dene, sonucu göster, onay verince hepsini yap.
+- İş bitince kısa bir özet ver: kaç dosya işlendi, nereye kaydedildi.
+
+# Araçlarım
+- Mac'te kurulu: ffmpeg, ImageMagick, ExifTool, Git (Homebrew ile).
+- Eksik bir araç gerekirse hangisini neden kuracağını söyle, sonra kur.
+NOT
+  tamam "Claude'a tanıtım notu yazıldı (~/.claude/CLAUDE.md)"
+else
+  uyari "~/.claude/CLAUDE.md zaten vardı, dokunulmadı"
+fi
+
+printf '\n%s✔ KURULUM BİTTİ, ZEYNEP!%s\n\n' "$YES" "$R"
+printf 'Şimdi açılacak:\n'
+printf '  • "Claude Calisma" klasörü (dosyalarını buraya koyabilirsin)\n'
+printf '  • Claude uygulaması (hesabınla giriş yap)\n\n'
+printf 'Bu Terminal penceresini artık kapatabilirsin.\n\n'
+rm -f "$HOME/zeynep-kurulum.sh"
+open "$HOME/Claude Calisma"
+open -a Claude
+KURULUM
+bash ~/zeynep-kurulum.sh</pre>
+        <div class="sonra">
+          <div><i>1</i> <span><b>Kopyala</b>'ya bas</span></div>
+          <div><i>2</i> <span>Terminal penceresine bir kez tıkla</span></div>
+          <div><i>3</i> <span><kbd>⌘</kbd> + <kbd>V</kbd> ile yapıştır</span></div>
+          <div><i>4</i> <span><kbd>↩ Enter</kbd> bas</span></div>
+        </div>
+      </div>
+      <div class="kutu">
+        <b class="bas">Bu komut ne yapıyor?</b>
+        <p>Önce kurulum adımlarını Mac'ine <code class="i">zeynep-kurulum.sh</code> adlı bir dosyaya yazar, sonra o dosyayı çalıştırır. Dosya iş bitince kendini siler. Komutu ikinci kez yapıştırmak zararsızdır: kurulu olanları atlar, eksik kalanı tamamlar.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">3</div>
+    <div class="adim-govde">
+      <h3>Terminal'e yapıştır ve Enter'a bas</h3>
+      <p>Terminal penceresine bir kez tıkla, <kbd>⌘ Command</kbd> + <kbd>V</kbd> ile yapıştır. Ekrana birçok satır dolar ve satır başlarında <code class="i">heredoc&gt;</code> yazabilir; bu normal. En son <kbd>↩ Enter</kbd> tuşuna bas.</p>
+      <figure class="cizim">
+        <div class="mac koyu">
+          <div class="mac-bar"><i></i><i></i><i></i><span>zeynep — zsh</span></div>
+          <div class="mac-ic" style="padding:0">
+            <div class="term">zeynep@MacBook-Pro ~ % cat &gt; ~/zeynep-kurulum.sh &lt;&lt;'KURULUM'
+<span class="d">heredoc&gt; #!/bin/bash</span>
+<span class="d">heredoc&gt; ...</span>
+<span class="d">heredoc&gt; KURULUM</span>
+zeynep@MacBook-Pro ~ % bash ~/zeynep-kurulum.sh<span class="imlec"></span></div>
+            <span class="balon" style="right:14px;bottom:14px">⌘V ile yapıştır, sonra ↩ Enter</span>
+          </div>
+        </div>
+        <figcaption>Yapıştırdıktan sonra pencerede böyle satırlar görünür (temsili).</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">4</div>
+    <div class="adim-govde">
+      <h3>Şifreni yaz (ekranda görünmez)</h3>
+      <p>Birkaç saniye sonra <code class="i">Password:</code> yazısı çıkar. Mac açılış şifreni yaz ve <kbd>↩ Enter</kbd> bas. <b>Yazarken hiçbir harf, nokta veya yıldız görünmez.</b> Bu bir güvenlik özelliğidir, klavye bozuk değil. Yanlış yazarsan <code class="i">Sorry, try again.</code> der; tekrar yaz.</p>
+      <figure class="cizim">
+        <div class="mac koyu">
+          <div class="mac-bar"><i></i><i></i><i></i><span>zeynep — bash</span></div>
+          <div class="mac-ic" style="padding:0">
+            <div class="term"><span class="m">━━━ 1/6 Mac şifresi ━━━</span>
+Mac açılış şifreni yaz ve Enter (↩) tuşuna bas.
+Yazarken ekranda HİÇBİR ŞEY görünmez; bu normal, yazmaya devam et.
+Password:<span class="imlec"></span></div>
+            <span class="balon" style="right:14px;bottom:14px">🔑 Şifreni yaz → ↩</span>
+          </div>
+        </div>
+        <figcaption>Şifre yalnızca bir kez sorulur. Komut onu kurulum bitene kadar hatırlar.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">5</div>
+    <div class="adim-govde">
+      <h3>Bekle: ne iner, ne görürsün</h3>
+      <p>Şifreden sonra senin bir şey yapmana gerek yok. Ekranda mor başlıklar (<code class="i">━━━ 2/6 …</code>) ve yeşil tikler (<code class="i">✔</code>) göreceksin. Arada çok hızlı akan İngilizce yazılar olur; okumana gerek yok. Sırayla şunlar olur:</p>
+      <div class="akis">
+        <div class="akis-sat"><div class="ust-sat"><b>Kontrol</b><span class="sure">birkaç saniye</span></div><p>macOS sürümüne ve yönetici hesabına bakar. Uygun değilse kırmızı ✖ ile Türkçe neden yazar ve durur.</p></div>
+        <div class="akis-sat"><div class="ust-sat"><b>1/6 · Mac şifresi</b><span class="sure">senin yazdığın kadar</span></div><p>Yukarıdaki adım. Tek etkileşim budur.</p></div>
+        <div class="akis-sat"><div class="ust-sat"><b>2/6 · Apple Komut Satırı Araçları + Homebrew</b><span class="sure">5–20 dk · ~1–2 GB</span></div><p>En uzun adım. Apple'ın kendi geliştirici araçları (Command Line Tools) ve Homebrew iner. Homebrew, Mac'e program kurmaya yarayan ücretsiz, çok yaygın bir yükleyicidir. Sonunda İngilizce “Next steps” diye bir bölüm yazabilir; onu yok say, komut o işi kendisi yapar.</p></div>
+        <div class="akis-sat"><div class="ust-sat"><b>3/6 · Claude masaüstü uygulaması</b><span class="sure">1–3 dk · birkaç yüz MB</span></div><p>Claude, Uygulamalar (Applications) klasörüne kurulur.</p></div>
+        <div class="akis-sat"><div class="ust-sat"><b>4/6 · Claude Code (terminal sürümü)</b><span class="sure">~1 dk</span></div><p>Claude'u Terminal'den de çalıştırabilmen için. Masaüstü uygulaması bundan bağımsız çalışır.</p></div>
+        <div class="akis-sat"><div class="ust-sat"><b>5/6 · Fotoğraf ve video araçları</b><span class="sure">5–15 dk</span></div><p><b>ffmpeg</b> (video dönüştürme, kesme, sıkıştırma, ses), <b>ImageMagick</b> (toplu fotoğraf boyutlandırma, filigran, format çevirme), <b>ExifTool</b> (çekim tarihi, kamera, telif gibi fotoğraf bilgileri), <b>Git</b> (Claude'un yaptığı değişiklikleri güvenle takip etmesi için). Claude bu araçları senin yerine kullanır.</p></div>
+        <div class="akis-sat"><div class="ust-sat"><b>6/6 · Çalışma klasörü + tanıtım notu</b><span class="sure">birkaç saniye</span></div><p>Ana klasöründe <b>Claude Calisma</b> klasörü (içinde <b>Gelen</b> ve <b>Cikti</b>) açılır. Claude'a seni tanıtan kısa bir not yazılır: Türkçe konuş, orijinal dosyalarımı asla silme, önce birkaç örnekte dene.</p></div>
+        <div class="akis-sat" style="padding-bottom:0"><div class="ust-sat"><b>Bitti</b><span class="sure">toplam 15–40 dk</span></div><p>Yeşil <b>✔ KURULUM BİTTİ, ZEYNEP!</b> yazısı çıkar. Claude Calisma klasörü ve Claude uygulaması kendiliğinden açılır.</p></div>
+      </div>
+      <figure class="cizim">
+        <div class="mac koyu">
+          <div class="mac-bar"><i></i><i></i><i></i><span>zeynep — bash</span></div>
+          <div class="term"><span class="m">━━━ 5/6 Fotoğraf ve video araçları ━━━</span>
+İndiriliyor: Git, ffmpeg (video), ImageMagick (fotoğraf), ExifTool (fotoğraf bilgileri).
+<span class="d">==&gt; Fetching ffmpeg</span>
+<span class="d">==&gt; Pouring ffmpeg--8.0.arm64_sequoia.bottle.tar.gz</span>
+<span class="g">✔ ffmpeg kuruldu</span>
+<span class="g">✔ imagemagick kuruldu</span>
+<span class="g">✔ exiftool kuruldu</span>
+
+<span class="m">━━━ 6/6 Çalışma klasörü ve Claude'a tanıtım notu ━━━</span>
+<span class="g">✔ Claude'a tanıtım notu yazıldı (~/.claude/CLAUDE.md)</span>
+
+<span class="g">✔ KURULUM BİTTİ, ZEYNEP!</span></div>
+        </div>
+        <figcaption>Kurulumun sonunda ekran aşağı yukarı böyle görünür (temsili; sürüm numaraları farklı olabilir).</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">6</div>
+    <div class="adim-govde">
+      <h3>Çıkabilecek pencereler ve ne yapacağın</h3>
+      <div class="tablo-sar"><table>
+        <thead><tr><th>Ekranda görürsen</th><th>Ne yapmalı</th></tr></thead>
+        <tbody>
+          <tr><td>“Komut satırı geliştirici araçlarını yüklemek ister misiniz?” penceresi</td><td><b>Yükle</b>'ye, sonra <b>Kabul Et</b>'e bas. Bitmesini bekle, sonra komutu Terminal'e yeniden yapıştır.</td></tr>
+          <tr><td>“Terminal, … denetlemek istiyor” veya bildirim izni</td><td><b>İzin Ver / Tamam</b>.</td></tr>
+          <tr><td>“Claude internetten indirilmiş bir uygulama. Açmak istediğinizden emin misiniz?”</td><td><b>Aç</b>. Bu soru yalnızca ilk açılışta gelir.</td></tr>
+          <tr><td>Kırmızı <code>✖</code> ile Türkçe bir hata</td><td>Yazanı yap (ör. internet bağlantısını kontrol et), sonra komutu yeniden yapıştır. Ayrıntı: <a href="#sorunlar">Sorun olursa</a>.</td></tr>
+        </tbody>
+      </table></div>
+      <figure class="cizim">
+        <div class="diyalog">
+          <div class="app-ikon"><div class="kare">C</div></div>
+          <b>“Claude” internetten indirilmiş bir uygulama. Açmak istediğinizden emin misiniz?</b>
+          <small style="color:var(--muted)">Uygulama Apple tarafından kötü amaçlı yazılım için denetlendi.</small>
+          <div class="butonlar"><span>İptal</span><span class="ana halka">Aç</span></div>
+        </div>
+        <figcaption>Temsili çizim. Kırmızı çerçeveli <b>Aç</b> düğmesine bas.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">7</div>
+    <div class="adim-govde">
+      <h3>İstersen kurulumu kontrol et</h3>
+      <p>Yeni bir Terminal penceresi aç (Terminal açıkken <kbd>⌘</kbd> + <kbd>N</kbd>), bu satırı kopyalayıp yapıştır, <kbd>↩ Enter</kbd> bas. Her satırda bir sürüm numarası görürsen her şey yerinde.</p>
+      <div class="kopya">
+        <div class="kopya-bas">
+          <span class="kopya-ad">Kontrol komutu<small>Yalnızca bakar, hiçbir şeyi değiştirmez</small></span>
+          <button class="kopya-btn" type="button" data-hedef="komut-kontrol"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><span>Kopyala</span></button>
+        </div>
+        <div class="ok-not"><span>Buna bas, sonra Terminal'e ⌘V ve ↩</span><svg viewBox="0 0 38 30" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 26C14 26 26 20 32 6"/><path d="M25 8l7-4 2 8"/></svg></div>
+        <pre id="komut-kontrol" class="kisa" tabindex="0">claude --version; ffmpeg -version | head -1; magick -version | head -1; exiftool -ver</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="kutu iyi">
+    <b class="bas">Yol A bitti.</b>
+    <p>Şimdi <a href="#ilk-acilis">İlk açılış</a> bölümüne geç. Yol B'yi atlayabilirsin.</p>
+  </div>
+</section>
+
+<section class="bolum" id="yol-b">
+  <div class="bolum-bas">
+    <span class="tc">YOL B · ELLE KURULUM</span>
+    <h2>Claude'u kendin indirip kur</h2>
+    <p>Terminal kullanmadan uygulamayı kurmak istersen bu yol. Uygulama kendi başına çalışır; ama videoları ve toplu fotoğraf işlerini yapabilmesi için sonda yine de 1 komut yapıştırman gerekir (adım 5).</p>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">1</div>
+    <div class="adim-govde">
+      <h3>İndirme sayfasını aç</h3>
+      <p>Safari veya Chrome'da: <a href="https://claude.com/download" target="_blank" rel="noopener">claude.com/download</a>. <b>macOS</b> için indirme düğmesine bas. Doğrudan indirme bağlantısı da şu: <a href="https://claude.ai/api/desktop/darwin/universal/dmg/latest/redirect" target="_blank" rel="noopener">Claude for Mac (.dmg)</a>. Aynı dosya hem Apple Silicon (M1–M5) hem Intel Mac'lerde çalışır.</p>
+      <figure class="cizim">
+        <div class="mac tarayici">
+          <div class="mac-bar"><i></i><i></i><i></i><span class="adres">claude.com/download</span></div>
+          <div class="mac-ic" style="display:grid;gap:12px;justify-items:center;text-align:center;padding:30px 18px">
+            <b style="font-family:var(--f-disp);font-size:1.4rem">Download Claude</b>
+            <span style="color:var(--muted);font-size:.9rem">Available for macOS, Windows, iOS…</span>
+            <span class="indir-btn halka">Download for macOS</span>
+          </div>
+        </div>
+        <figcaption>Temsili çizim. Sayfanın görünümü değişebilir; “macOS” yazan indirme düğmesini ara.</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">2</div>
+    <div class="adim-govde">
+      <h3>İndirilen dosyayı aç ve Uygulamalar'a sürükle</h3>
+      <p>Dosya <b>İndirilenler (Downloads)</b> klasörüne iner: <code class="i">Claude.dmg</code>. Dock'un sağındaki indirilenler simgesinden veya Finder → İndirilenler'den çift tıkla. Açılan pencerede <b>Claude</b> simgesini fareyle tut ve yanındaki <b>Applications</b> klasörünün üstüne bırak.</p>
+      <figure class="cizim">
+        <div class="mac">
+          <div class="mac-bar"><i></i><i></i><i></i><span>Claude</span></div>
+          <div class="dmg">
+            <div class="app-ikon"><div class="kare">C</div>Claude</div>
+            <div class="surukle"><svg viewBox="0 0 120 40" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="7 6"><path d="M6 24C40 4 80 4 108 22"/><path d="M98 12l11 10-14 4" stroke-dasharray="0"/></svg>tut, sürükle, bırak</div>
+            <div class="app-ikon"><div class="klasor"></div>Applications</div>
+          </div>
+        </div>
+        <figcaption>Temsili çizim. Kopyalama birkaç saniye sürer.</figcaption>
+      </figure>
+      <p>Sonra Finder'ın sol kenarındaki <b>Claude</b> diskinin yanındaki ⏏ simgesine basıp çıkarabilirsin; <code class="i">Claude.dmg</code> dosyasını çöpe atabilirsin.</p>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">3</div>
+    <div class="adim-govde">
+      <h3>Claude'u aç</h3>
+      <p><kbd>⌘</kbd> + <kbd>Boşluk</kbd> → <b>Claude</b> yaz → <kbd>↩</kbd>. Ya da Finder → Uygulamalar → Claude. İlk açılışta “internetten indirilmiş bir uygulama” sorusu gelir: <b>Aç</b>'a bas. İstersen Dock'taki simgeye sağ tıklayıp <b>Seçenekler → Dock'ta Tut</b> diyerek sabitle.</p>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">4</div>
+    <div class="adim-govde">
+      <h3>Giriş yap</h3>
+      <p>Hesabını açarken kullandığın yöntemle giriş yap (Google, Apple veya e-posta). Tarayıcı açılıp onay isteyebilir; onayla, uygulamaya geri dön.</p>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">5</div>
+    <div class="adim-govde">
+      <h3>Foto/video araçlarını ekle (tek komut)</h3>
+      <p>Claude'un videoları dönüştürmesi, toplu fotoğraf işlemesi için Mac'te ffmpeg, ImageMagick ve ExifTool olmalı. Bunları kurmak Mac şifreni ister; şifreyi Claude yazamaz, o yüzden bu kısmı Terminal'den sen başlatırsın. <a href="#yol-a">Yol A</a>'daki adım 1–5'i aynen yap ve aynı komutu yapıştır. Claude zaten kurulu olduğu için komut o adımı kendiliğinden atlar, yalnız eksikleri kurar.</p>
+      <div class="mini">
+        <p><b>Aynı kurulum komutu.</b> Bu düğme Yol A'daki kutunun içeriğini kopyalar.</p>
+        <button class="kopya-btn" type="button" data-hedef="komut-tam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><span>Kopyala</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bolum" id="ilk-acilis">
+  <div class="bolum-bas">
+    <span class="tc">TC 00:40 · İLK AÇILIŞ</span>
+    <h2>Claude'u ilk kez kullanmak</h2>
+    <p>Uygulamanın üstünde üç sekme var. Dosyalarınla çalışmak için <b>Code</b> sekmesini kullanacaksın. Adı “kod” ama senin için yaptığı şey dosya işi: Claude, Mac'indeki araçları senin yerine çalıştırır.</p>
+  </div>
+
+  <div class="ikili">
+    <div><b>Chat</b><p>Sohbet. Soru sor, metin yazdır, bir fotoğraf yükleyip yorum iste. Dosyalarına dokunmaz.</p></div>
+    <div><b>Cowork</b><p>Uzun, belge ağırlıklı işler ve telefondan Mac'e iş verme (Dispatch). Pro planda açılır.</p></div>
+    <div><b>Code</b><p>Asıl iş burada. Bir klasör seçersin, Claude o klasördeki fotoğraf ve videolarla çalışır: dönüştürür, adlandırır, sıkıştırır, altyazı çıkarır.</p></div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">1</div>
+    <div class="adim-govde">
+      <h3>Code sekmesini aç, klasör seç</h3>
+      <p>Üstten <b>Code</b> sekmesine tıkla. Yazı kutusunun altındaki ilk düğme <b>Local</b> olsun (“Mac'imde çalış” demek). Yanındaki klasör düğmesine bas ve ana klasöründeki <b>Claude Calisma</b> klasörünü seç. Fotoğraf ve videolarını önce bu klasörün içindeki <b>Gelen</b>'e kopyala.</p>
+      <figure class="cizim">
+        <div class="mac">
+          <div class="mac-bar"><i></i><i></i><i></i><span>Claude</span></div>
+          <div class="claude-pen">
+            <div class="claude-yan">
+              <div class="sekmeler"><span>Chat</span><span>Cowork</span><span class="acik halka">Code</span></div>
+              <span style="color:var(--muted);margin-top:8px">Oturumlar</span>
+              <span>Düğün klasörü</span><span>Reels kesimleri</span>
+            </div>
+            <div class="claude-ana">
+              <div class="istem">
+                <span class="yazi">Gelen klasöründeki fotoğrafları çekim tarihine göre adlandır…</span>
+                <div class="cipler"><span class="cip">Local</span><span class="cip halka">📁 Claude Calisma</span><span class="cip">Manual</span><span class="cip" style="margin-left:auto">↑</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <figcaption>Temsili çizim. Kırmızı çerçeveler: Code sekmesi ve klasör seçimi. Düğmelerin yeri sürüme göre biraz değişebilir.</figcaption>
+      </figure>
+      <div class="kutu">
+        <b class="bas">Claude Calisma klasörünü nerede bulurum?</b>
+        <p>Finder'ı aç, üst menüden <b>Git → Ana Klasör</b> (kısayol <kbd>⇧ Shift</kbd> + <kbd>⌘</kbd> + <kbd>H</kbd>). Klasörü Finder'ın sol kenarına sürüklersen hep orada durur. Bilerek Masaüstü yerine burada: Masaüstü iCloud'a eşitleniyorsa büyük video dosyaları internet kotanı ve iCloud alanını doldurabilir.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">2</div>
+    <div class="adim-govde">
+      <h3>İzin modunu “Manual” bırak</h3>
+      <p>Yazı kutusunun altındaki mod düğmesi başlangıçta <b>Manual</b> olsun. Bu modda Claude her dosya değişikliğinden ve her komuttan önce sana sorar; sen <b>Allow / İzin ver</b> dersin. Alıştıkça <b>Accept edits</b> moduna geçebilirsin; o zaman daha az sorar. <b>Bypass permissions</b> modunu açma.</p>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">3</div>
+    <div class="adim-govde">
+      <h3>Mac'in soracağı izinler</h3>
+      <p>Claude bir klasöre ilk kez eriştiğinde Mac sorar: “Claude, ‘Masaüstü’ / ‘İndirilenler’ / ‘çıkarılabilir birim’ klasöründeki dosyalara erişmek istiyor.” <b>İzin Ver</b>'e bas. Harici SSD veya kart okuyucu kullanıyorsan “çıkarılabilir birimler” iznini de ver; yoksa Claude diskteki dosyaları göremez.</p>
+    </div>
+  </div>
+
+  <div class="adim">
+    <div class="adim-no">4</div>
+    <div class="adim-govde">
+      <h3>İlk denemen</h3>
+      <p>Gelen klasörüne 5–10 fotoğraf kopyala, sonra bu cümleyi kopyalayıp Claude'un yazı kutusuna yapıştır ve <kbd>↩</kbd> bas. Türkçe yazman yeterli; Claude Türkçe cevap verir.</p>
+      <div class="mini">
+        <p>“Merhaba! Gelen klasöründeki fotoğrafları listele: her birinin çekim tarihi, kamerası ve boyutu ne? Hiçbir dosyayı değiştirme.”</p>
+        <button class="kopya-btn" type="button" data-metin="Merhaba! Gelen klasöründeki fotoğrafları listele: her birinin çekim tarihi, kamerası ve boyutu ne? Hiçbir dosyayı değiştirme."><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></svg><span>Kopyala</span></button>
+      </div>
+      <p>Claude bir komut çalıştırmak istediğinde ekranda gösterir ve izin ister. Ne yapacağını Türkçe açıklar. Anlamadığın bir şey olursa “bunu daha basit anlat” yazman yeterli.</p>
+    </div>
+  </div>
+</section>
+
+<section class="bolum" id="iphone">
+  <div class="bolum-bas">
+    <span class="tc">TC 00:50 · iPHONE</span>
+    <h2>iPhone'da da aynı hesap</h2>
+    <p>iPhone'a Claude uygulamasını kurarsan aynı hesapla her yerden konuşursun. Mac'e kurulum için şart değil, isteğe bağlı.</p>
+  </div>
+  <div class="adim">
+    <div class="adim-no">1</div>
+    <div class="adim-govde">
+      <p>iPhone'da şu bağlantıyı aç: <a href="https://apps.apple.com/app/claude-by-anthropic/id6473753684" target="_blank" rel="noopener">App Store'da Claude</a> (ya da App Store'da “Claude by Anthropic” ara). <b>Al / İndir</b>'e bas, açıp aynı hesapla giriş yap.</p>
+      <ul>
+        <li><b>Çekimde:</b> sahnenin fotoğrafını çekip ışık, kompozisyon veya poz önerisi iste; sesli konuşabilirsin.</li>
+        <li><b>Müşteriyle:</b> mesaj taslağı, teklif metni, Instagram açıklaması yazdır.</li>
+        <li><b>Dispatch:</b> Cowork sekmesinde eşleştirirsen telefondan Mac'e iş verirsin (“dünkü çekimi Instagram boyutuna getir”). Bunun için Mac açık ve Claude uygulaması çalışıyor olmalı.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="bolum" id="isin">
+  <div class="bolum-bas">
+    <span class="rec">SENİN İŞİN İÇİN</span>
+    <h2>Fotoğrafçı ve video editörü olarak Claude ile neler yaparsın</h2>
+    <p>Claude bir fotoğraf ya da kurgu programının yerini almaz. Yaptığı şey, o programlardan önce ve sonra gelen saatlerce süren tekrar işlerini üstlenmek: adlandırma, ayıklama, dönüştürme, boyutlandırma, sıkıştırma, altyazı, teslim. Sen Türkçe bir cümle yazarsın; Claude Mac'indeki ffmpeg, ImageMagick ve ExifTool'u senin yerine çalıştırır. Aşağıdaki cümlelerin hepsini kopyalayıp Code sekmesine yapıştırabilirsin.</p>
+  </div>
+
+  <div class="tablo-sar"><table>
+    <thead><tr><th>İş</th><th>Elle</th><th>Claude ile</th></tr></thead>
+    <tbody>
+      <tr><td>500 fotoğrafı çekim tarihine göre adlandırıp aylara göre klasörlemek</td><td class="num">1–2 saat</td><td class="num">2–5 dk</td></tr>
+      <tr><td>200 fotoğrafı Instagram 4:5 boyutuna getirip logo eklemek</td><td class="num">1–3 saat</td><td class="num">3–10 dk</td></tr>
+      <tr><td>30 dakikalık röportaja Türkçe altyazı (SRT)</td><td class="num">2–4 saat</td><td class="num">10–30 dk + senin kontrolün</td></tr>
+      <tr><td>40 adet 4K klibe kurgu için hafif kopya (proxy)</td><td class="num">tek tek ayar, sonra bekleme</td><td class="num">tek cümle, sonra bekleme</td></tr>
+      <tr><td>Bir videoyu WhatsApp'a sığacak boyuta sıkıştırmak</td><td class="num">ayar denemeleri</td><td class="num">1 cümle, 1–3 dk</td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:.85rem;color:var(--muted);margin-top:-10px">Süreler yaklaşık tahmindir; dosya sayısına, video uzunluğuna ve Mac'inin hızına göre değişir. Video işleme süresinin çoğu Mac'in hesaplama süresidir; o sırada sen başka işle uğraşabilirsin.</p>
+
+  <div class="alan">
+    <div class="alan-bas"><h3>Fotoğraf arşivi ve toplu düzenleme</h3><span class="etiket">ImageMagick · ExifTool</span></div>
+    <p>Çekimden sonraki arşiv işi, teslim boyutları, filigran ve fotoğraf bilgileri.</p>
+    <div class="istemler">
+      <div class="mini"><p>“Gelen klasöründeki fotoğrafları çekim tarihine göre yeniden adlandır (2026-11-16_001.jpg gibi) ve aylara göre klasörle. Orijinallere dokunma, kopyaları Cikti klasörüne koy.”</p><button class="kopya-btn" type="button" data-metin="Gelen klasöründeki fotoğrafları çekim tarihine göre yeniden adlandır (2026-11-16_001.jpg gibi) ve aylara göre klasörle. Orijinallere dokunma, kopyaları Cikti klasörüne koy."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“Gelen klasöründeki JPG'leri Instagram için 1080×1350 (4:5) boyutuna getir, kaliteyi koruyarak sıkıştır, sağ alt köşeye logo.png'yi %60 saydamlıkla ekle. Sonuçlar Cikti/Instagram klasörüne.”</p><button class="kopya-btn" type="button" data-metin="Gelen klasöründeki JPG'leri Instagram için 1080x1350 (4:5) boyutuna getir, kaliteyi koruyarak sıkıştır, sağ alt köşeye logo.png'yi %60 saydamlıkla ekle. Sonuçlar Cikti/Instagram klasörüne."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“iPhone'dan gelen HEIC fotoğrafları JPG'ye çevir; çekim tarihi ve konum bilgisi korunsun.”</p><button class="kopya-btn" type="button" data-metin="iPhone'dan gelen HEIC fotoğrafları JPG'ye çevir; çekim tarihi ve konum bilgisi korunsun."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“Cikti klasöründeki tüm fotoğraflara telif bilgisi ekle: Yaratıcı ‘Zeynep Tutulkan’, Telif ‘© 2026 Zeynep Tutulkan’. Konum bilgisini sil.”</p><button class="kopya-btn" type="button" data-metin="Cikti klasöründeki tüm fotoğraflara telif bilgisi ekle: Yaratıcı 'Zeynep Tutulkan', Telif '© 2026 Zeynep Tutulkan'. Konum bilgisini sil."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“Bu klasördeki bulanık veya çok karanlık görünen fotoğrafları bul, kopyalarını ‘Kontrol Et’ klasörüne koy ve listesini göster. Son kararı ben vereceğim.”</p><button class="kopya-btn" type="button" data-metin="Bu klasördeki bulanık veya çok karanlık görünen fotoğrafları bul, kopyalarını 'Kontrol Et' klasörüne koy ve listesini göster. Son kararı ben vereceğim."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“Müşteri için temas sayfası hazırla: her sayfada 20 küçük resim, altlarında dosya adı, tek bir PDF olarak.”</p><button class="kopya-btn" type="button" data-metin="Müşteri için temas sayfası hazırla: her sayfada 20 küçük resim, altlarında dosya adı, tek bir PDF olarak."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“RAW ve JPG çiftlerini eşleştir. JPG'si olmayan RAW'ları ve RAW'ı olmayan JPG'leri ayrı ayrı listele.”</p><button class="kopya-btn" type="button" data-metin="RAW ve JPG çiftlerini eşleştir. JPG'si olmayan RAW'ları ve RAW'ı olmayan JPG'leri ayrı ayrı listele."><span>Kopyala</span></button></div>
+    </div>
+  </div>
+
+  <div class="alan">
+    <div class="alan-bas"><h3>Video: dönüştürme, kesme, ses, altyazı</h3><span class="etiket">ffmpeg</span></div>
+    <p>Kurgu programını açmadan yapılabilen işler ve kurguya hazırlık.</p>
+    <div class="istemler">
+      <div class="mini"><p>“Gelen klasöründeki 4K videolar için kurguda akıcı oynayacak hafif kopyalar (proxy) oluştur: 1080p, ProRes Proxy. Adları aynı kalsın, Cikti/Proxy klasörüne koy.”</p><button class="kopya-btn" type="button" data-metin="Gelen klasöründeki 4K videolar için kurguda akıcı oynayacak hafif kopyalar (proxy) oluştur: 1080p, ProRes Proxy. Adları aynı kalsın, Cikti/Proxy klasörüne koy."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“roportaj.mp4 videosunun Türkçe altyazısını çıkar ve SRT dosyası olarak kaydet. Gerekli aracı kurman gerekirse önce söyle.”</p><button class="kopya-btn" type="button" data-metin="roportaj.mp4 videosunun Türkçe altyazısını çıkar ve SRT dosyası olarak kaydet. Gerekli aracı kurman gerekirse önce söyle."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“Bu yatay videodan Reels için 9:16 dikey bir sürüm çıkar, ortadan kırp. Önce 10 saniyelik bir deneme yap, göstereyim.”</p><button class="kopya-btn" type="button" data-metin="Bu yatay videodan Reels için 9:16 dikey bir sürüm çıkar, ortadan kırp. Önce 10 saniyelik bir deneme yap, göstereyim."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“Klasördeki tüm kliplerin ses seviyesini YouTube için eşitle (-14 LUFS).”</p><button class="kopya-btn" type="button" data-metin="Klasördeki tüm kliplerin ses seviyesini YouTube için eşitle (-14 LUFS)."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“klip.mov videosunu WhatsApp'ta gönderebileceğim şekilde 50 MB'ın altına sıkıştır, görüntü olabildiğince net kalsın.”</p><button class="kopya-btn" type="button" data-metin="klip.mov videosunu WhatsApp'ta gönderebileceğim şekilde 50 MB'ın altına sıkıştır, görüntü olabildiğince net kalsın."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“Videonun 00:01:20 ile 00:02:05 arasını kalite kaybı olmadan ayrı bir dosya olarak kes.”</p><button class="kopya-btn" type="button" data-metin="Videonun 00:01:20 ile 00:02:05 arasını kalite kaybı olmadan ayrı bir dosya olarak kes."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“Benim .cube LUT dosyamı klasördeki tüm kliplere uygula; müşteriye önizleme olarak göndereceğim.”</p><button class="kopya-btn" type="button" data-metin="Benim .cube LUT dosyamı klasördeki tüm kliplere uygula; müşteriye önizleme olarak göndereceğim."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“Bu 300 fotoğraflık seriden 24 fps, 4K bir timelapse videosu yap.”</p><button class="kopya-btn" type="button" data-metin="Bu 300 fotoğraflık seriden 24 fps, 4K bir timelapse videosu yap."><span>Kopyala</span></button></div>
+      <div class="mini"><p>“Her klipten 3 kare kapak görseli (thumbnail) çıkar ve hepsini tek bir sayfada yan yana göster.”</p><button class="kopya-btn" type="button" data-metin="Her klipten 3 kare kapak görseli (thumbnail) çıkar ve hepsini tek bir sayfada yan yana göster."><span>Kopyala</span></button></div>
+    </div>
+  </div>
+
+  <div class="alan">
+    <div class="alan-bas"><h3>Kullandığın programlarla birlikte</h3><span class="etiket">Lightroom · Photoshop · Premiere · Final Cut · DaVinci</span></div>
+    <p>Claude bu programların içine girip senin yerine fırça sürmez. Onların okuyabildiği dosyaları hazırlar ve onlara iş yaptıran betikler yazar.</p>
+    <div class="ikili">
+      <div><b>Lightroom</b><p>Anahtar kelime, yıldız, telif gibi bilgileri dosyalara yazar. Lightroom'da <i>Meta Veri → Meta Veriyi Dosyalardan Oku</i> ile içeri alırsın. Dışa aktardığın klasörleri sonradan toplu işler.</p></div>
+      <div><b>Photoshop</b><p>Tekrarlanan işler için betik (.jsx) yazar. Photoshop'ta <i>Dosya → Komut Dosyaları → Gözat</i> ile çalıştırırsın: toplu boyut, katman adlandırma, şablona yerleştirme.</p></div>
+      <div><b>Premiere · Final Cut · DaVinci Resolve</b><p>Altyazı (SRT), proxy, ses eşitleme, format dönüştürme, kare çıkarma. SRT dosyasını üç programa da doğrudan aktarabilirsin.</p></div>
+      <div><b>Ekranında tıklama (Computer use)</b><p>Claude, izin verirsen ekranını görüp programlarda kendisi tıklayabilir. Bu özellik hâlâ deneme aşamasında, yavaştır, macOS 14 ister. Toplu işlerde komut yolu daha hızlı ve güvenilirdir.</p></div>
+    </div>
+  </div>
+
+  <div class="alan">
+    <div class="alan-bas"><h3>İşinin yazı ve müşteri tarafı</h3><span class="etiket">Chat · Cowork</span></div>
+    <div class="ikili">
+      <div><b>Müşteri iletişimi</b><p>Teklif, fiyat listesi, teslim e-postası, hatırlatma mesajı. Türkçe, İngilizce, Hollandaca veya başka bir dilde.</p></div>
+      <div><b>Sosyal medya</b><p>Her gönderiye açıklama ve etiket önerisi. Fotoğrafı yüklersen ona bakıp yazar.</p></div>
+      <div><b>Çekim planı</b><p>Düğün, ürün veya portre çekimi için sahne ve çekim listesi, ekipman kontrol listesi, gün akışı.</p></div>
+      <div><b>Teslim sayfası</b><p>Müşteriye fotoğrafları gösterebileceğin basit bir galeri sayfası ya da PDF katalog.</p></div>
+    </div>
+  </div>
+
+  <div class="kutu dikkat">
+    <b class="bas">Bilmen gereken sınırlar</b>
+    <ul style="margin:0;padding-left:20px;display:grid;gap:6px">
+      <li><b>Yaratıcı göz senin.</b> Renk, kurgu ritmi, hikâye senin kararın. Claude teknik işi yapar, beğeniyi sen belirlersin.</li>
+      <li><b>Hata yapabilir.</b> Bu yüzden tanıtım notunda “önce 2–3 dosyada dene, onay al” yazıyor. Sonucu görmeden 1000 dosyaya uygulatma.</li>
+      <li><b>Orijinallerin yedeği.</b> Önemli çekimlerin bir kopyası her zaman harici diskte olsun. Claude'a orijinal klasörü değil, kopyasını ver.</li>
+      <li><b>Gizlilik.</b> Claude'dan bir fotoğrafa “bakmasını” istersen o görüntü işlenmek için Anthropic'e gider. Toplu dönüştürme gibi komut işlerinde dosyalar Mac'inde kalır; Claude'a yalnızca dosya adları ve komut sonuçları gider. Müşterinin özel fotoğraflarında buna dikkat et.</li>
+      <li><b>Kullanım sınırı.</b> Pro planda belli bir kullanım sınırı var. Dolarsa birkaç saat içinde yenilenir; çok yoğun kullanırsan Max'e geçilir.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="bolum" id="sorunlar">
+  <div class="bolum-bas">
+    <span class="tc">TC 01:00 · SORUN OLURSA</span>
+    <h2>Sık karşılaşılan durumlar</h2>
+    <p>Kurulum komutunu yeniden yapıştırmak her zaman güvenlidir: bitmiş adımları atlar, yarım kalanı tamamlar.</p>
+  </div>
+  <div class="tablo-sar"><table>
+    <thead><tr><th>Görürsen</th><th>Anlamı</th><th>Ne yap</th></tr></thead>
+    <tbody>
+      <tr><td>Şifre yazarken hiçbir şey görünmüyor</td><td>Normal, güvenlik özelliği</td><td>Yazmaya devam et, sonra <kbd>↩</kbd>.</td></tr>
+      <tr><td><code>Sorry, try again.</code></td><td>Şifre yanlış</td><td>Mac açılış şifreni tekrar yaz. Büyük/küçük harfe dikkat.</td></tr>
+      <tr><td><code>✖ … yönetici (Admin) değil</code></td><td>Hesabın kurulum yetkisi yok</td><td>Yönetici hesabıyla giriş yap ya da Sistem Ayarları → Kullanıcılar ve Gruplar'dan hesabını yönetici yap.</td></tr>
+      <tr><td><code>✖ macOS … eski</code></td><td>macOS 13'ten eski</td><td>Sistem Ayarları → Genel → Yazılım Güncelleme. Güncelledikten sonra komutu yeniden yapıştır.</td></tr>
+      <tr><td><code>curl: (6) Could not resolve host</code></td><td>İnternet koptu</td><td>Wi-Fi'ı kontrol et, komutu yeniden yapıştır.</td></tr>
+      <tr><td>Geliştirici araçları penceresi çıktı</td><td>Apple'ın araçları indiriliyor</td><td><b>Yükle</b> → <b>Kabul Et</b>, bitince komutu yeniden yapıştır.</td></tr>
+      <tr><td><code>zsh: command not found: claude</code> (kontrol komutunda)</td><td>Terminal eski ayarla açık</td><td>Terminal'i tamamen kapat (<kbd>⌘</kbd> + <kbd>Q</kbd>), yeniden aç, tekrar dene.</td></tr>
+      <tr><td>“Claude açılamıyor, geliştirici doğrulanamadı”</td><td>Mac'in güvenlik sorusu</td><td>Sistem Ayarları → Gizlilik ve Güvenlik → aşağıda <b>Yine de Aç</b>.</td></tr>
+      <tr><td>Code sekmesinde “Upgrade” yazıyor</td><td>Ücretsiz plandasın</td><td><a href="https://claude.ai/upgrade" target="_blank" rel="noopener">claude.ai/upgrade</a> ile Pro'ya geç.</td></tr>
+      <tr><td>Claude harici diskteki dosyaları göremiyor</td><td>Mac izni verilmedi</td><td>Sistem Ayarları → Gizlilik ve Güvenlik → Dosyalar ve Klasörler → Claude → Çıkarılabilir Birimler'i aç.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="kutu kirmizi">
+    <b class="bas">Güvenlik için üç kural</b>
+    <p>Mac şifreni yalnızca Terminal'deki <code class="i">Password:</code> satırına yaz; Claude'un sohbet kutusuna asla yazma. Kart bilgisini yalnızca claude.ai ödeme sayfasına gir. İnternette bulduğun, kaynağını bilmediğin komutları Terminal'e yapıştırma.</p>
+  </div>
+</section>
+
+<footer class="son">
+  <p>Kaynaklar (Kasım 2026): <a href="https://claude.com/download" target="_blank" rel="noopener">claude.com/download</a> · <a href="https://code.claude.com/docs/en/desktop" target="_blank" rel="noopener">Claude Desktop belgeleri</a> · <a href="https://code.claude.com/docs/en/setup" target="_blank" rel="noopener">Claude Code kurulumu</a> · <a href="https://brew.sh" target="_blank" rel="noopener">brew.sh</a> · <a href="https://claude.com/pricing" target="_blank" rel="noopener">claude.com/pricing</a></p>
+  <p>Ekran çizimleri temsilidir; uygulama güncellendikçe düğme yerleri ve adları biraz değişebilir.</p>
+</footer>
+
+<script>
+(function(){
+  function metinAl(btn){
+    if (btn.dataset.metin) return btn.dataset.metin;
+    var el = document.getElementById(btn.dataset.hedef);
+    return el ? el.textContent : "";
+  }
+  function sec(btn){
+    var el = btn.dataset.hedef ? document.getElementById(btn.dataset.hedef) : btn.parentElement.querySelector("p");
+    if (!el) return;
+    var r = document.createRange(); r.selectNodeContents(el);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  function durum(btn, yazi, ok){
+    var span = btn.querySelector("span"); var eski = btn.dataset.eski || span.textContent;
+    btn.dataset.eski = eski; span.textContent = yazi; btn.classList.toggle("oldu", !!ok);
+    clearTimeout(btn._t); btn._t = setTimeout(function(){ span.textContent = eski; btn.classList.remove("oldu"); }, 2500);
+  }
+  document.querySelectorAll(".kopya-btn").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var t = metinAl(btn);
+      var yedek = function(){ sec(btn); durum(btn, "Seçildi: ⌘C ile kopyala", false); };
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(t).then(function(){ durum(btn, "Kopyalandı ✓", true); }, yedek);
+      } else { yedek(); }
+    });
+  });
+})();
+</script>
+
+</div>
+
+</body>
+</html>
