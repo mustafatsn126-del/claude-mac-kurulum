@@ -901,12 +901,24 @@ Password:<span class="imlec"></span></div>
     btn.dataset.eski = eski; span.textContent = yazi; btn.classList.toggle("oldu", !!ok);
     clearTimeout(btn._t); btn._t = setTimeout(function(){ span.textContent = eski; btn.classList.remove("oldu"); }, 2500);
   }
+  // Once senkron execCommand: Safari/WhatsApp ici tarayicida izin istemeden calisir.
+  function eskiYontem(t){
+    var ta = document.createElement("textarea");
+    ta.value = t; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:-9999px;opacity:0";
+    document.body.appendChild(ta); ta.focus(); ta.select(); ta.setSelectionRange(0, t.length);
+    var ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta); return ok;
+  }
   document.querySelectorAll(".kopya-btn").forEach(function(btn){
     btn.addEventListener("click", function(){
       var t = metinAl(btn);
-      var yedek = function(){ sec(btn); durum(btn, "Seçildi: ⌘C ile kopyala", false); };
+      var bitti = false;
+      var basari = function(){ if (bitti) return; bitti = true; durum(btn, "Kopyalandı ✓", true); };
+      var yedek = function(){ if (bitti) return; bitti = true; sec(btn); durum(btn, "Seçildi: ⌘C ile kopyala", false); };
+      if (eskiYontem(t)) { basari(); return; }
       if (navigator.clipboard && navigator.clipboard.writeText){
-        navigator.clipboard.writeText(t).then(function(){ durum(btn, "Kopyalandı ✓", true); }, yedek);
+        navigator.clipboard.writeText(t).then(basari, yedek);
+        setTimeout(yedek, 1500);
       } else { yedek(); }
     });
   });
